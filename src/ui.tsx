@@ -1,5 +1,5 @@
 /**
- * Cape Extension Overrides - Plugin UI
+ * Cape Partner Expansion - Plugin UI
  *
  * React-based UI for the Figma plugin
  */
@@ -290,7 +290,7 @@ function App() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <div style={styles.title}>Cape Extension Overrides</div>
+        <div style={styles.title}>Cape Partner Expansion</div>
         <div style={styles.subtitle}>
           Apply Cape component token overrides and rebind variables
         </div>
