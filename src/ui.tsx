@@ -27,7 +27,7 @@ interface SelectionChangedMessage {
 
 interface OverrideResult {
   variableName: string;
-  status: 'created' | 'updated' | 'error';
+  status: 'imported' | 'not_found' | 'error';
   message?: string;
 }
 
@@ -206,11 +206,11 @@ const styles = {
     fontSize: '9px',
     fontWeight: 500,
   },
-  createdBadge: {
+  importedBadge: {
     backgroundColor: '#d4edda',
     color: '#155724',
   },
-  updatedBadge: {
+  notFoundBadge: {
     backgroundColor: '#fff3cd',
     color: '#856404',
   },
@@ -362,21 +362,21 @@ function App() {
               }}
             >
               <div style={styles.resultTitle}>
-                Variables {result.success ? 'Created/Updated' : '(Some Errors)'}
+                Variables {result.success ? 'Imported from Library' : '(Some Errors)'}
               </div>
               {result.results.map((r) => (
                 <div key={r.variableName} style={styles.resultItem}>
                   <span
                     style={{
                       ...styles.statusBadge,
-                      ...(r.status === 'created'
-                        ? styles.createdBadge
-                        : r.status === 'updated'
-                        ? styles.updatedBadge
+                      ...(r.status === 'imported'
+                        ? styles.importedBadge
+                        : r.status === 'not_found'
+                        ? styles.notFoundBadge
                         : styles.errorBadge),
                     }}
                   >
-                    {r.status}
+                    {r.status === 'not_found' ? 'not found' : r.status}
                   </span>
                   <span style={{ fontFamily: 'monospace', fontSize: '9px' }}>
                     {r.variableName}
