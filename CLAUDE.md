@@ -1,7 +1,7 @@
-# Figma Cape Extension Overrides Plugin
+# Figma Cape Partner Expansion Plugin
 
 ## Purpose
-A Figma plugin that applies Cape component overrides to designs, matching the CSS overrides used in the codebase (vendor-partner-portal).
+A Figma plugin that applies Cape Partner Expansion overrides to designs, matching the CSS overrides used in the codebase (vendor-partner-portal).
 
 ## Reference: CSS Overrides
 Source: `packages/layout/src/daemons/CapeVendorExpansion/cape-vendor-expansion.scss`
