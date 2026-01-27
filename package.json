@@ -1,7 +1,7 @@
 {
-  "name": "figma-cape-extension-overrides",
+  "name": "figma-cape-partner-expansion",
   "version": "1.0.0",
-  "description": "Figma plugin that applies Cape component overrides to designs",
+  "description": "Figma plugin that applies Cape Partner Expansion overrides to designs",
   "scripts": {
     "build": "node build.mjs",
     "watch": "node build.mjs --watch"
