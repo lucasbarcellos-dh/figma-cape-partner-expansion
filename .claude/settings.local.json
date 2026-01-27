@@ -6,7 +6,10 @@
       "Bash(npm run build:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
-      "Bash(git status:*)"
+      "Bash(git status:*)",
+      "WebSearch",
+      "WebFetch(domain:www.figma.com)",
+      "WebFetch(domain:developers.figma.com)"
     ]
   }
 }
