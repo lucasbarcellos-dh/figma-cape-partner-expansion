@@ -1,5 +1,5 @@
 /**
- * Token override definitions for Cape Extension Overrides
+ * Token override definitions for Cape Partner Expansion
  *
  * These mappings correspond to the CSS overrides in:
  * packages/layout/src/daemons/CapeVendorExpansion/cape-vendor-expansion.scss
