@@ -90,12 +90,12 @@ async function findLibraryCollection(): Promise<{
 /**
  * Find a local "Cape Overrides" collection (for when running in the library file itself)
  */
-function findLocalCollection(): {
+async function findLocalCollection(): Promise<{
   collection: VariableCollection;
   variables: Variable[];
   debugCollections: string[];
-} | null {
-  const collections = figma.variables.getLocalVariableCollections();
+} | null> {
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
 
   // Log all local collections for debugging
   const debugCollections = collections.map(c => `"${c.name}"`);
@@ -107,7 +107,7 @@ function findLocalCollection(): {
     return null;
   }
 
-  const allVariables = figma.variables.getLocalVariables('COLOR');
+  const allVariables = await figma.variables.getLocalVariablesAsync('COLOR');
   const variables = allVariables.filter(v => v.variableCollectionId === targetCollection.id);
 
   return { collection: targetCollection, variables, debugCollections };
@@ -206,7 +206,7 @@ function collectAllNodes(nodes: readonly SceneNode[]): SceneNode[] {
 /**
  * Rebind a node's variable references to use local overrides
  */
-function rebindNodeVariables(node: SceneNode, rebindResults: RebindResult[], debugInfo: string[]): void {
+async function rebindNodeVariables(node: SceneNode, rebindResults: RebindResult[], debugInfo: string[]): Promise<void> {
   // Check if node supports bound variables
   if (!('boundVariables' in node)) {
     return;
@@ -222,7 +222,7 @@ function rebindNodeVariables(node: SceneNode, rebindResults: RebindResult[], deb
     for (let i = 0; i < boundVars.fills.length; i++) {
       const binding = boundVars.fills[i];
       if (binding && binding.id) {
-        processBinding(node, 'fills', i, binding, rebindResults, debugInfo);
+        await processBinding(node, 'fills', i, binding, rebindResults, debugInfo);
       }
     }
   }
@@ -232,35 +232,35 @@ function rebindNodeVariables(node: SceneNode, rebindResults: RebindResult[], deb
     for (let i = 0; i < boundVars.strokes.length; i++) {
       const binding = boundVars.strokes[i];
       if (binding && binding.id) {
-        processBinding(node, 'strokes', i, binding, rebindResults, debugInfo);
+        await processBinding(node, 'strokes', i, binding, rebindResults, debugInfo);
       }
     }
   }
 
   // Also check for single bindings (some properties use object instead of array)
   if (boundVars.fills && !Array.isArray(boundVars.fills) && (boundVars.fills as any).id) {
-    processBinding(node, 'fills', 0, boundVars.fills as VariableAlias, rebindResults, debugInfo);
+    await processBinding(node, 'fills', 0, boundVars.fills as VariableAlias, rebindResults, debugInfo);
   }
 
   if (boundVars.strokes && !Array.isArray(boundVars.strokes) && (boundVars.strokes as any).id) {
-    processBinding(node, 'strokes', 0, boundVars.strokes as VariableAlias, rebindResults, debugInfo);
+    await processBinding(node, 'strokes', 0, boundVars.strokes as VariableAlias, rebindResults, debugInfo);
   }
 }
 
 /**
  * Process a single variable binding
  */
-function processBinding(
+async function processBinding(
   node: SceneNode,
   property: 'fills' | 'strokes',
   index: number,
   binding: VariableAlias,
   rebindResults: RebindResult[],
   debugInfo: string[]
-): void {
+): Promise<void> {
   try {
     // Get the original variable
-    const originalVar = figma.variables.getVariableById(binding.id);
+    const originalVar = await figma.variables.getVariableByIdAsync(binding.id);
     if (!originalVar) {
       debugInfo.push(`Could not find variable with ID: ${binding.id}`);
       return;
@@ -356,13 +356,13 @@ async function applyTokenOverrides(scope: 'selection' | 'page' | 'document'): Pr
     }
 
     // Step 2: If not found, try local collection (for when running in the library file itself)
-    const localData = !libraryData ? findLocalCollection() : null;
+    const localData = !libraryData ? await findLocalCollection() : null;
 
     if (localData && localData.debugCollections) {
       debugInfo.push(`Available local collections: ${localData.debugCollections.join(', ') || '(none)'}`);
     } else if (!libraryData) {
       // Log what local collections are available
-      const allLocalCollections = figma.variables.getLocalVariableCollections();
+      const allLocalCollections = await figma.variables.getLocalVariableCollectionsAsync();
       debugInfo.push(`Available local collections: ${allLocalCollections.map(c => `"${c.name}"`).join(', ') || '(none)'}`);
     }
 
@@ -456,7 +456,7 @@ async function applyTokenOverrides(scope: 'selection' | 'page' | 'document'): Pr
     debugInfo.push(`Processing ${allNodes.length} nodes in scope: ${scope}`);
 
     for (const node of allNodes) {
-      rebindNodeVariables(node, rebindResults, debugInfo);
+      await rebindNodeVariables(node, rebindResults, debugInfo);
     }
 
     debugInfo.push(`Total rebinds: ${rebindResults.length}`);
