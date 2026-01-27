@@ -222,13 +222,3 @@ export const TOKEN_OVERRIDES: TokenOverride[] = [
     category: 'Base',
   },
 ];
-
-/**
- * Collection name for the local override variables
- */
-export const OVERRIDE_COLLECTION_NAME = 'Cape Overrides';
-
-/**
- * Mode name to target in the override collection
- */
-export const TARGET_MODE_NAME = 'Light';
