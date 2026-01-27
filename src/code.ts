@@ -1,5 +1,5 @@
 /**
- * Cape Extension Overrides - Main Plugin Code
+ * Cape Partner Expansion - Main Plugin Code
  *
  * This code runs in the Figma plugin sandbox and handles:
  * - Creating local variable collections for overrides
@@ -56,7 +56,7 @@ const localVariableMap = new Map<string, Variable>();
 figma.showUI(__html__, {
   width: 420,
   height: 600,
-  title: 'Cape Extension Overrides',
+  title: 'Cape Partner Expansion',
 });
 
 /**
