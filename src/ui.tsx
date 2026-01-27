@@ -318,7 +318,7 @@ function App() {
             }}
             onClick={() => setScope('page')}
           >
-            Current Page
+            Current page
           </button>
           <button
             style={{
@@ -327,13 +327,13 @@ function App() {
             }}
             onClick={() => setScope('document')}
           >
-            Entire File
+            Entire file
           </button>
         </div>
       </div>
 
       <div style={styles.section}>
-        <div style={styles.sectionTitle}>Token Overrides ({overrides.length})</div>
+        <div style={styles.sectionTitle}>Token overrides ({overrides.length})</div>
         <div style={styles.overrideList}>
           {overrides.map((override) => (
             <div key={override.variableName} style={styles.overrideItem}>
@@ -362,7 +362,7 @@ function App() {
               }}
             >
               <div style={styles.resultTitle}>
-                Variables {result.success ? 'Imported from Library' : '(Some Errors)'}
+                Variables {result.success ? 'imported from library' : '(some errors)'}
               </div>
               {result.results.map((r) => (
                 <div key={r.variableName} style={styles.resultItem}>
@@ -393,7 +393,7 @@ function App() {
             {result.rebindResults && result.rebindResults.length > 0 && (
               <div style={styles.rebindSection}>
                 <div style={styles.resultTitle}>
-                  Rebound {result.rebindResults.length} Variable References
+                  Rebound {result.rebindResults.length} variable references
                 </div>
                 {result.rebindResults.slice(0, 10).map((r, i) => (
                   <div key={i} style={styles.rebindItem}>
@@ -413,7 +413,7 @@ function App() {
 
             {result.rebindResults && result.rebindResults.length === 0 && (
               <div style={{ ...styles.resultSection, backgroundColor: '#fff3cd', borderColor: '#ffc107' }}>
-                <div style={styles.resultTitle}>No Variables Rebound</div>
+                <div style={styles.resultTitle}>No variables rebound</div>
                 <div style={{ fontSize: '10px', color: '#856404' }}>
                   No matching variable bindings found in the {scope}.
                   Check the debug log below for details.
@@ -423,7 +423,7 @@ function App() {
 
             {result.debugInfo && result.debugInfo.length > 0 && (
               <div style={{ marginTop: '12px', padding: '12px', backgroundColor: '#f5f5f5', borderRadius: '6px', border: '1px solid #ddd' }}>
-                <div style={styles.resultTitle}>Debug Log</div>
+                <div style={styles.resultTitle}>Debug log</div>
                 <div style={{ fontSize: '9px', fontFamily: 'monospace', maxHeight: '150px', overflow: 'auto', whiteSpace: 'pre-wrap', color: '#666' }}>
                   {result.debugInfo.join('\n')}
                 </div>
@@ -449,7 +449,7 @@ function App() {
           onClick={handleApply}
           disabled={isApplying}
         >
-          {isApplying ? 'Applying...' : 'Apply Overrides'}
+          {isApplying ? 'Applying...' : 'Apply overrides'}
         </button>
       </div>
     </div>
