@@ -1,0 +1,543 @@
+/**
+ * NOTE: This file is only meant to overwrite EXISTING Cape components and tokens
+ * 
+ * ## Tokens
+ *
+ * Find available tokens here:
+ * @see https://cape.deliveryhero.com/2bfa22855/p/155272-token-variables---css
+ *
+ * ## Component Classes 
+ * 
+ * They follow this pattern: cape-<component-name>
+ * If the component have children: cape-<component-name>-<child-name>
+ *
+ * For example these are the class names for the Alert component:
+ * 
+ * ```jsx
+ * <Alert> // .cape-alert
+ *   <Icon /> // .cape-alert-icon
+ *   <CloseButton /> // .cape-alert-close-button
+ *   {Alert Text} // .cape-alert-content
+ * </Alert>
+ * ```
+ *
+ * @see https://cape.deliveryhero.com/2bfa22855/p/437665-expansions
+ * @see https://www.figma.com/design/KaatCXLdY4j7QG9jHGWAxf/-Cape--Partner-Patterns?node-id=1396-49405&p=f&t=99TDhdLHKo8Qun69-0
+ * @see https://www.figma.com/files/907684760615163521/project/98722856?fuid=1141634473174094473
+ */
+
+body {
+  // Token group overrides
+  --cp-action-color-secondary-enabled: var(--cp-color-jacaranda-grey-05) !important;
+  --cp-action-color-secondary-hover: var(--cp-color-jacaranda-grey-10) !important;
+  --cp-form-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05) !important;
+  --cp-form-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10) !important;
+  --cp-control-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05) !important;
+  --cp-control-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10) !important;
+  --cp-color-jacaranda-grey-01: #f1f2f4;
+
+  //  Chip overrides
+  & .cape-chip {
+    --cp-chip-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05);
+    --cp-chip-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10);
+    &[data-selected='true'] {
+      background-color: transparent;
+    }
+  }
+
+  // IconButton overrides
+  & .cape-icon-button[data-size='small'] {
+    svg {
+      width: var(--cp-sizing-small);
+    }
+  }
+
+  // SearchInput overrides
+  & .cape-search-input {
+    --cp-text-input-border-radius: var(--cp-border-radius-pill);
+    --cp-search-border-radius-small: var(--cp-border-radius-pill);
+    --cp-search-border-radius-medium: var(--cp-border-radius-pill);
+    --cp-search-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05);
+    --cp-search-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10);
+  }
+
+  // Switch overrides
+  & .cape-switch-base {
+    --cp-switch-color-active-hover: var(--cp-action-color-success-primary-hover);
+    --cp-switch-color-active-enabled: var(--cp-action-color-success-primary-enabled);
+  }
+
+  // Tab overrides
+  & .cape-tabs {
+    --cp-border-color-high: var(--cp-color-jacaranda-grey-01);
+    .cape-tab-list {
+      gap: var(--cp-spacing-xlarge);
+    }
+    .cape-tab-item {
+      padding-inline: var(--cp-spacing-none);
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  // Alert overrides
+  & .cape-alert {
+    &[data-variant='neutral'] {
+      --cp-alert-background-color: var(--cp-color-jacaranda-grey-01) !important;
+    }
+    .cape-checkbox {
+      --cp-checkbox-border-color: var(--cp-color-jacaranda-grey-30);
+    }
+    .cape-radio {
+      --cp-radio-border-color: var(--cp-color-jacaranda-grey-30);
+    }
+  }
+
+  // Segmented control overrides
+  & .cape-segmented-control {
+    border-radius: var(--cp-border-radius-pill);
+    .cape-segmented-control-item {
+      border-radius: var(--cp-border-radius-pill);
+    }
+  }
+
+  // Side navigation overrides
+  // Source: https://github.com/deliveryhero/partner-portal-design/blob/72289360fdb144b71abc2c15c3814796e90870fb/src/components/sidenav/sidenav.scss#L2
+  & .cape-side-navigation {
+    // Custom tokens
+    // --cp-sidenav-width: 280px;
+    --cp-sidenav-width-collapsed: 64px;
+    --cp-sidenav-padding-block-start: var(--cp-spacing-5xlarge);
+
+    // Override bouncy spring animation
+    animation-timing-function: ease-in-out !important;
+    animation-duration: 0.3s !important;
+
+    // Right-side border
+    border-right: 1px solid var(--cp-color-jacaranda-grey-01);
+
+    // Remove gap between items
+    gap: 0;
+
+    // ===================
+    // Component styles
+    // ===================
+
+    // Header
+    .cape-side-navigation-header {
+      padding: 0 var(--cp-spacing-3xlarge) var(--cp-spacing-xsmall);
+
+      svg {
+        color: var(--cp-color-brand-light-primary);
+      }
+    }
+
+    // Sections
+    .cape-side-navigation-section {
+      padding-block-start: var(--cp-spacing-xlarge);
+
+      &-header {
+        margin-bottom: var(--cp-spacing-xsmall);
+      }
+
+      // Non-collapsible sections
+      &.non-collapsible-section summary .cape-side-navigation-section-header {
+        pointer-events: none;
+        cursor: default;
+
+        svg {
+          display: none !important;
+        }
+      }
+    }
+
+    // Links
+    .cape-side-navigation-link {
+      gap: var(--cp-spacing-large);
+
+      &::before {
+        --cp-sidenav-active-indicator-start: calc(-1 * var(--cp-spacing-2xlarge));
+      }
+
+      &-text {
+        font-weight: var(--cp-font-weight-medium);
+      }
+    }
+
+    // Items
+    .side-navigation-item {
+      padding-inline: var(--cp-spacing-2xlarge);
+
+      // Last item section padding
+      &:last-child .cape-side-navigation-section {
+        padding-bottom: var(--cp-spacing-large);
+      }
+    }
+
+    // Footer
+    .cape-side-navigation-footer {
+      padding-inline: var(--cp-spacing-large);
+      border-top-color: var(--cp-color-jacaranda-grey-01);
+
+      .cape-side-navigation-toggle .cape-icon {
+        width: var(--cp-spacing-2xlarge);
+        height: var(--cp-spacing-2xlarge);
+      }
+    }
+
+    // Scroll area (shared styles)
+    .cape-scroll-area {
+      // Fade effect at top
+      // FIXME: 🐛 🐛 🐛 🐛 🐛 🐛
+      // It breaks the z-index of brand-view button
+      // mask-image: linear-gradient(to bottom, transparent, black var(--cp-spacing-3xlarge));
+      // -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--cp-spacing-3xlarge));
+    }
+
+    // ===================
+    // Expanded state
+    // ===================
+
+    &[data-state='expanded'] {
+      .cape-scroll-area {
+        padding-top: var(--cp-spacing-small);
+
+        // Scrollbar - Firefox
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+        transition: scrollbar-color 0.2s ease;
+
+        &:hover {
+          scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+        }
+
+        // Scrollbar - WebKit (Chrome, Safari, Opera)
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+        }
+
+        &:hover::-webkit-scrollbar-thumb {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .cape-side-navigation-footer {
+        position: static;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+      }
+
+      // TODO: fix toggle button position
+      .cape-side-navigation-toggle {
+        // position: absolute;
+        // bottom: var(--cp-spacing-xlarge);
+        // left: 100%;
+        // transform: translateX(-50%);
+        justify-content: center;
+        width: var(--cp-spacing-5xlarge);
+        height: var(--cp-spacing-5xlarge);
+        background-color: white;
+        border: 1px solid var(--cp-color-jacaranda-grey-05);
+        border-radius: var(--cp-border-radius-pill);
+        box-shadow: var(--cp-base-elevation-low);
+        transition: box-shadow 0.2s ease;
+        z-index: 10;
+
+        &:hover {
+          box-shadow: var(--cp-base-elevation-high);
+        }
+      }
+    }
+
+    // ===================
+    // Collapsed state
+    // ===================
+
+    &[data-state='collapsed'] {
+      .cape-side-navigation-header {
+        padding-inline: 0;
+      }
+
+      .cape-side-navigation-block {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+      }
+
+      .side-navigation-item {
+        padding-inline: 6px;
+      }
+
+      .store-selector {
+        margin-top: var(--cp-spacing-2xlarge);
+      }
+
+      .cape-scroll-area {
+        padding-top: 0;
+
+        // Hide scrollbar - Firefox
+        scrollbar-width: none;
+
+        // Hide scrollbar - IE/Edge
+        -ms-overflow-style: none;
+
+        // Hide scrollbar - WebKit
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        &[data-scrolled='true'] {
+          border-top: none;
+        }
+      }
+    }
+  }
+}
+
+/* 
+ * Vendor-specific tokens
+ * @see https://www.figma.com/design/KaatCXLdY4j7QG9jHGWAxf/-Cape--Partner-Patterns?node-id=8192-388
+ */
+body[data-theme='foodpanda-light-b2b'] {
+  --cpx-content-color-branded-primary: #412d36;
+  --cpx-content-color-branded-secondary: #8a5f71;
+  --cpx-gradient-color-1: #fd1f00;
+  --cpx-gradient-color-2: #e21b70;
+  --cpx-gradient-color-3: #fd00f7;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #fd1f00 4%, transparent),
+    color-mix(in srgb, #e21b70 4%, transparent),
+    color-mix(in srgb, #fd00f7 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #8a5f71 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #8a5f71 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #8a5f71 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #e21b70 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #e21b70 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #8a5f71 8%, transparent);
+}
+
+body[data-theme='foodora-light-b2b'] {
+  --cpx-content-color-branded-primary: #3d232e;
+  --cpx-content-color-branded-secondary: #8a5069;
+  --cpx-gradient-color-1: #ef1f00;
+  --cpx-gradient-color-2: #df1067;
+  --cpx-gradient-color-3: #ef00e8;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #ef1f00 4%, transparent),
+    color-mix(in srgb, #df1067 4%, transparent),
+    color-mix(in srgb, #ef00e8 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #8a5069 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #8a5069 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #8a5069 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #df1067 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #df1067 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #8a5069 8%, transparent);
+}
+
+body[data-theme='talabat-light-b2b'] {
+  --cpx-content-color-branded-primary: #493022;
+  --cpx-content-color-branded-secondary: #9c6649;
+  --cpx-gradient-color-1: #fae100;
+  --cpx-gradient-color-2: #f55905;
+  --cpx-gradient-color-3: #fa0032;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #fae100 4%, transparent),
+    color-mix(in srgb, #f55905 4%, transparent),
+    color-mix(in srgb, #fa0032 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #9c6649 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #9c6649 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #9c6649 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #f55905 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #f55905 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #9c6649 8%, transparent);
+}
+
+body[data-theme='pedidosya-light-b2b'] {
+  --cpx-content-color-branded-primary: #4b202e;
+  --cpx-content-color-branded-secondary: #a14562;
+  --cpx-gradient-color-1: #fa3a00;
+  --cpx-gradient-color-2: #fa0050;
+  --cpx-gradient-color-3: #fa00d9;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #fa3a00 4%, transparent),
+    color-mix(in srgb, #fa0050 4%, transparent),
+    color-mix(in srgb, #fa00d9 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #a14562 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #a14562 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #a14562 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #fa0050 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #fa0050 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #a14562 8%, transparent);
+}
+
+body[data-theme='glovo-light-b2b'] {
+  --cpx-content-color-branded-primary: #050b0a;
+  --cpx-content-color-branded-secondary: #296056;
+  --cpx-gradient-color-1: #00649e;
+  --cpx-gradient-color-2: #009e81;
+  --cpx-gradient-color-3: #009e2a;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #00649e 4%, transparent),
+    color-mix(in srgb, #009e81 4%, transparent),
+    color-mix(in srgb, #009e2a 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #296056 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #296056 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #296056 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #009e81 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #009e81 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #296056 8%, transparent);
+}
+
+body[data-theme='efood-light-b2b'] {
+  --cpx-content-color-branded-primary: #0b1a16;
+  --cpx-content-color-branded-secondary: #30705f;
+  --cpx-gradient-color-1: #0080b4;
+  --cpx-gradient-color-2: #00b485;
+  --cpx-gradient-color-3: #00b422;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #0080b4 4%, transparent),
+    color-mix(in srgb, #00b485 4%, transparent),
+    color-mix(in srgb, #00b422 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #30705f 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #30705f 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #30705f 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #00b485 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #00b485 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #30705f 8%, transparent);
+}
+
+body[data-theme='foody-light-b2b'] {
+  --cpx-content-color-branded-primary: #0b1a16;
+  --cpx-content-color-branded-secondary: #30705f;
+  --cpx-gradient-color-1: #0080b4;
+  --cpx-gradient-color-2: #00b485;
+  --cpx-gradient-color-3: #00b422;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #0080b4 4%, transparent),
+    color-mix(in srgb, #00b485 4%, transparent),
+    color-mix(in srgb, #00b422 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #30705f 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #30705f 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #30705f 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #00b485 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #00b485 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #30705f 8%, transparent);
+}
+
+body[data-theme='hungerstation-light-b2b'] {
+  --cpx-content-color-branded-primary: #1a262a;
+  --cpx-content-color-branded-secondary: #496b76;
+  --cpx-gradient-color-1: #002dd3;
+  --cpx-gradient-color-2: #1198c2;
+  --cpx-gradient-color-3: #00d391;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #002dd3 4%, transparent),
+    color-mix(in srgb, #1198c2 4%, transparent),
+    color-mix(in srgb, #00d391 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #496b76 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #496b76 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #496b76 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #1198c2 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #1198c2 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #496b76 8%, transparent);
+}
+
+body[data-theme='yemeksepeti-light-b2b'] {
+  --cpx-content-color-branded-primary: #401b27;
+  --cpx-content-color-branded-secondary: #96405b;
+  --cpx-gradient-color-1: #ea3600;
+  --cpx-gradient-color-2: #ea004b;
+  --cpx-gradient-color-3: #ea00cc;
+  --cpx-gradient-branded-high: linear-gradient(
+    235deg,
+    var(--cpx-gradient-color-1),
+    var(--cpx-gradient-color-2),
+    var(--cpx-gradient-color-3)
+  );
+  --cpx-gradient-branded-low: linear-gradient(
+    235deg,
+    color-mix(in srgb, #ea3600 4%, transparent),
+    color-mix(in srgb, #ea004b 4%, transparent),
+    color-mix(in srgb, #ea00cc 4%, transparent)
+  );
+  --cpx-border-color-branded-low: color-mix(in srgb, #96405b 8%, transparent);
+  --cpx-border-color-branded-normal: color-mix(in srgb, #96405b 12%, transparent);
+  --cpx-border-color-branded-high: color-mix(in srgb, #96405b 16%, transparent);
+  --cpx-elevation-branded-high: 0px 2px 2px 0px color-mix(in srgb, #ea004b 8%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, #ea004b 8%, transparent);
+  --cpx-elevation-branded-low: 0px 2px 8px 0px color-mix(in srgb, #96405b 8%, transparent);
+}
