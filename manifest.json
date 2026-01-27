@@ -1,6 +1,6 @@
 {
-  "name": "Cape Extension Overrides",
-  "id": "cape-extension-overrides",
+  "name": "Cape Partner Expansion",
+  "id": "cape-partner-expansion",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html",
