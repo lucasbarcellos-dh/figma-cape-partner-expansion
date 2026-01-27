@@ -1,8 +1,9 @@
 {
   "name": "Cape Partner Expansion",
-  "id": "cape-partner-expansion",
+  "id": "1597944895506459760",
   "api": "1.0.0",
   "main": "dist/code.js",
+  "documentAccess": "dynamic-page",
   "ui": "dist/ui.html",
   "capabilities": [],
   "permissions": ["teamlibrary"],
