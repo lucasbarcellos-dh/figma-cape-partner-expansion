@@ -5,6 +5,7 @@
   "main": "dist/code.js",
   "ui": "dist/ui.html",
   "capabilities": [],
+  "permissions": ["teamlibrary"],
   "enableProposedApi": false,
   "editorType": ["figma"],
   "networkAccess": {
