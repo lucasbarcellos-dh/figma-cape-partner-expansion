@@ -14,6 +14,8 @@ export interface TokenOverride {
   hexColor: string;
   /** The override color as RGBA (0-1 range for Figma) */
   rgbaColor: RGBA;
+  /** Optional category for grouping in the UI */
+  category?: string;
 }
 
 export interface RGBA {
@@ -62,66 +64,127 @@ export const JACARANDA_GREY = {
 export const GREY_01_OVERRIDE = '#f1f2f4';
 
 /**
- * Token group overrides - these modify semantic token values
+ * All color-related token overrides from cape-vendor-expansion.scss
  *
- * CSS Reference:
- * --cp-action-color-secondary-enabled: var(--cp-color-jacaranda-grey-05) !important;
- * --cp-action-color-secondary-hover: var(--cp-color-jacaranda-grey-10) !important;
- * --cp-form-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05) !important;
- * --cp-form-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10) !important;
- * --cp-control-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05) !important;
- * --cp-control-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10) !important;
- * --cp-color-jacaranda-grey-01: #f1f2f4;
+ * Organized by category:
+ * - Global token group overrides (action, form, control)
+ * - Component-specific overrides (chip, search, switch, border, alert)
  */
 export const TOKEN_OVERRIDES: TokenOverride[] = [
+  // ===================================
+  // GLOBAL TOKEN GROUP OVERRIDES
+  // ===================================
+
   // Action color overrides
   {
     variableName: 'action/color/secondary/enabled',
     description: 'Secondary action enabled state → grey-05',
     hexColor: JACARANDA_GREY['05'],
     rgbaColor: hexToRgba(JACARANDA_GREY['05']),
+    category: 'Action',
   },
   {
     variableName: 'action/color/secondary/hover',
     description: 'Secondary action hover state → grey-10',
     hexColor: JACARANDA_GREY['10'],
     rgbaColor: hexToRgba(JACARANDA_GREY['10']),
+    category: 'Action',
   },
 
   // Form color overrides
   {
     variableName: 'form/color/branded/primary/enabled',
-    description: 'Form branded primary enabled state → grey-05',
+    description: 'Form branded primary enabled → grey-05',
     hexColor: JACARANDA_GREY['05'],
     rgbaColor: hexToRgba(JACARANDA_GREY['05']),
+    category: 'Form',
   },
   {
     variableName: 'form/color/branded/primary/hover',
-    description: 'Form branded primary hover state → grey-10',
+    description: 'Form branded primary hover → grey-10',
     hexColor: JACARANDA_GREY['10'],
     rgbaColor: hexToRgba(JACARANDA_GREY['10']),
+    category: 'Form',
   },
 
   // Control color overrides
   {
     variableName: 'control/color/branded/primary/enabled',
-    description: 'Control branded primary enabled state → grey-05',
+    description: 'Control branded primary enabled → grey-05',
     hexColor: JACARANDA_GREY['05'],
     rgbaColor: hexToRgba(JACARANDA_GREY['05']),
+    category: 'Control',
   },
   {
     variableName: 'control/color/branded/primary/hover',
-    description: 'Control branded primary hover state → grey-10',
+    description: 'Control branded primary hover → grey-10',
     hexColor: JACARANDA_GREY['10'],
     rgbaColor: hexToRgba(JACARANDA_GREY['10']),
+    category: 'Control',
   },
 
-  // Base color override (grey-01 gets a different value)
+  // ===================================
+  // COMPONENT-SPECIFIC OVERRIDES
+  // ===================================
+
+  // Chip component overrides
+  // CSS: --cp-chip-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05);
   {
-    variableName: 'color/jacaranda/grey/01',
-    description: 'Jacaranda grey-01 override (F4F5F6 → f1f2f4)',
+    variableName: 'chip/color/branded/primary/enabled',
+    description: 'Chip branded primary enabled → grey-05',
+    hexColor: JACARANDA_GREY['05'],
+    rgbaColor: hexToRgba(JACARANDA_GREY['05']),
+    category: 'Chip',
+  },
+  // CSS: --cp-chip-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10);
+  {
+    variableName: 'chip/color/branded/primary/hover',
+    description: 'Chip branded primary hover → grey-10',
+    hexColor: JACARANDA_GREY['10'],
+    rgbaColor: hexToRgba(JACARANDA_GREY['10']),
+    category: 'Chip',
+  },
+
+  // Search component overrides
+  // CSS: --cp-search-color-branded-primary-enabled: var(--cp-color-jacaranda-grey-05);
+  {
+    variableName: 'search/color/branded/primary/enabled',
+    description: 'Search branded primary enabled → grey-05',
+    hexColor: JACARANDA_GREY['05'],
+    rgbaColor: hexToRgba(JACARANDA_GREY['05']),
+    category: 'Search',
+  },
+  // CSS: --cp-search-color-branded-primary-hover: var(--cp-color-jacaranda-grey-10);
+  {
+    variableName: 'search/color/branded/primary/hover',
+    description: 'Search branded primary hover → grey-10',
+    hexColor: JACARANDA_GREY['10'],
+    rgbaColor: hexToRgba(JACARANDA_GREY['10']),
+    category: 'Search',
+  },
+
+  // Border color overrides
+  // CSS: --cp-border-color-high: var(--cp-color-jacaranda-grey-01);
+  {
+    variableName: 'border/color/high',
+    description: 'Border high emphasis → grey-01 (overridden)',
     hexColor: GREY_01_OVERRIDE,
     rgbaColor: hexToRgba(GREY_01_OVERRIDE),
+    category: 'Border',
+  },
+
+  // ===================================
+  // BASE COLOR OVERRIDE
+  // ===================================
+
+  // Grey-01 base color override (affects multiple components)
+  // CSS: --cp-color-jacaranda-grey-01: #f1f2f4;
+  {
+    variableName: 'color/jacaranda/grey/01',
+    description: 'Jacaranda grey-01 (F4F5F6 → f1f2f4)',
+    hexColor: GREY_01_OVERRIDE,
+    rgbaColor: hexToRgba(GREY_01_OVERRIDE),
+    category: 'Base',
   },
 ];
 
