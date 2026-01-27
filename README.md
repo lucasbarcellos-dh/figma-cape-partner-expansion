@@ -1,6 +1,6 @@
 # Figma Cape Partner Expansion Plugin
 
-A Figma plugin that applies Cape Partner Expansion design token overrides to designs, matching the CSS overrides used in the vendor-partner-portal codebase.
+A Figma plugin that applies Cape Partner Expansion design token overrides to designs, matching the CSS overrides used in the Partner Portal codebase.
 
 ## Purpose
 
