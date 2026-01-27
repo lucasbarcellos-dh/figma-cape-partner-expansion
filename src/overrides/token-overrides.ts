@@ -63,6 +63,12 @@ export const JACARANDA_GREY = {
 // Override value for grey-01 (CSS changes it from #F4F5F6 to #f1f2f4)
 export const GREY_01_OVERRIDE = '#f1f2f4';
 
+// Cape Success color palette (for switch overrides)
+export const CAPE_SUCCESS = {
+  '60': '#048A42',
+  '70': '#047538',
+} as const;
+
 /**
  * All color-related token overrides from cape-vendor-expansion.scss
  *
@@ -161,6 +167,35 @@ export const TOKEN_OVERRIDES: TokenOverride[] = [
     hexColor: JACARANDA_GREY['10'],
     rgbaColor: hexToRgba(JACARANDA_GREY['10']),
     category: 'Search',
+  },
+
+  // Switch component overrides
+  // CSS: --cp-switch-color-active-enabled: var(--cp-action-color-success-primary-enabled);
+  {
+    variableName: 'switch/color/active/enabled',
+    description: 'Switch active enabled → success green',
+    hexColor: CAPE_SUCCESS['70'],
+    rgbaColor: hexToRgba(CAPE_SUCCESS['70']),
+    category: 'Switch',
+  },
+  // CSS: --cp-switch-color-active-hover: var(--cp-action-color-success-primary-hover);
+  {
+    variableName: 'switch/color/active/hover',
+    description: 'Switch active hover → success green',
+    hexColor: CAPE_SUCCESS['60'],
+    rgbaColor: hexToRgba(CAPE_SUCCESS['60']),
+    category: 'Switch',
+  },
+
+  // Alert component overrides (neutral variant)
+  // CSS: --cp-alert-background-color: var(--cp-color-jacaranda-grey-01) (for neutral variant)
+  // In Figma, neutral alerts use feedback/color/disabled/low
+  {
+    variableName: 'feedback/color/disabled/low',
+    description: 'Alert neutral background → grey-01',
+    hexColor: GREY_01_OVERRIDE,
+    rgbaColor: hexToRgba(GREY_01_OVERRIDE),
+    category: 'Alert',
   },
 
   // Border color overrides
