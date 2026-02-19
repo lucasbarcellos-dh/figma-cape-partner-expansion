@@ -82,7 +82,3 @@ figma-cape-partner-expansion/
 - Figma Desktop app (for local development)
 - Access to the Cape Partner Expansion team library (for production use)
 - Node.js 18+ (for development)
-
-## License
-
-Internal use only - Commonwealth Bank of Australia
