@@ -1,0 +1,25 @@
+README.md
+  s_381a8c7aff58ff::t_4a59a85f723ef5 38-47,63
+src/code.ts
+  s_381a8c7aff58ff::t_b04a4c2140bb4d 5,10-14,18,145-147,152-155,384-389,391-395,397-402,405,409,865,868,872-928
+  s_381a8c7aff58ff::t_c20041bb4d8887 929
+src/ui.tsx
+  s_381a8c7aff58ff::t_b04a4c2140bb4d 23-28,353-354,373-376,492-500,507,512-516
+  s_381a8c7aff58ff::t_1fc6c340beee05 78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fa62f9efc7f6a96f17afb96df68bd0cd41ec1d95",
+  "prompts": {},
+  "sessions": {
+    "s_381a8c7aff58ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7d825707-5368-497d-87c3-6de4f4f3f4d2",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "lucasbarcellos <lucas.araujo@deliveryhero.com>"
+    }
+  }
+}
