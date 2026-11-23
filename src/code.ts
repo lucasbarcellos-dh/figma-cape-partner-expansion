@@ -2,19 +2,20 @@
  * Cape Partner Expansion - Main Plugin Code
  *
  * This code runs in the Figma plugin sandbox and handles:
- * - Finding the "Cape Overrides" collection from the "Partner Expansion" library
+ * - Finding the "Overrides" collection from the "Partner Expansion" library
  * - Importing override variables from the library
  * - Rebinding components to use the library override variables
  */
 
-import {
-  TOKEN_OVERRIDES,
-  type TokenOverride
-} from './overrides/token-overrides';
+// Overrides are discovered at runtime from the "Overrides" variable collection
+// in Figma (no hardcoded list). Add a color variable there + publish the library.
+interface TokenOverride {
+  variableName: string;
+}
 
 // Library and collection names to look for
 const LIBRARY_NAME = '[Cape] Partner Expansion';
-const COLLECTION_NAME = 'Cape Overrides';
+const COLLECTION_NAME = 'Overrides';
 const B2B_LIBRARY_NAME = '[Cape] B2B variables';
 
 // Message types for UI ↔ Plugin communication
@@ -141,50 +142,17 @@ async function findLocalCollection(): Promise<{
 }
 
 /**
- * Match a library variable by name (case-insensitive)
- */
-function matchLibraryVariable(
-  libraryVars: LibraryVariable[],
-  targetName: string
-): LibraryVariable | null {
-  const normalized = targetName.toLowerCase();
-  return libraryVars.find(v => v.name.toLowerCase() === normalized) || null;
-}
-
-/**
- * Match a local variable by name (case-insensitive)
- */
-function matchLocalVariable(
-  localVars: Variable[],
-  targetName: string
-): Variable | null {
-  const normalized = targetName.toLowerCase();
-  return localVars.find(v => v.name.toLowerCase() === normalized) || null;
-}
-
-/**
- * Check if a variable name matches one of our override targets
+ * Check if a variable name matches one of the loaded override variables.
+ * Matches the full variable path, or the path preceded by a collection prefix
+ * (whole path segments only, so "color/info" never matches "text/color/info").
  */
 function getOverrideForVariable(variableName: string): TokenOverride | null {
-  // Normalize: remove leading slashes, convert to lowercase
   const normalized = variableName.replace(/^\/+/, '').toLowerCase();
 
-  for (const override of TOKEN_OVERRIDES) {
-    const overrideNormalized = override.variableName.toLowerCase();
-
-    // Direct match
-    if (normalized === overrideNormalized) {
-      return override;
-    }
-
-    // Match at end (in case there's a collection prefix)
-    if (normalized.endsWith('/' + overrideNormalized)) {
-      return override;
-    }
-
-    // Match if the variable name ends with our target (without leading slash)
-    if (normalized.endsWith(overrideNormalized)) {
-      return override;
+  for (const overrideName of localVariableMap.keys()) {
+    const overrideNormalized = overrideName.toLowerCase();
+    if (normalized === overrideNormalized || normalized.endsWith('/' + overrideNormalized)) {
+      return { variableName: overrideName };
     }
   }
   return null;
@@ -413,64 +381,32 @@ async function applyTokenOverrides(scope: 'selection' | 'page' | 'document'): Pr
       debugInfo.push(`Found local collection with ${localData.variables.length} variables (running in library file)`);
     }
 
-    // Step 3: Get variables from library or local collection
-    for (const override of TOKEN_OVERRIDES) {
+    // Step 3: Import every color variable found in the Overrides collection
+    const sourceVars: Array<LibraryVariable | Variable> = libraryData
+      ? libraryData.variables.filter(v => v.resolvedType === 'COLOR')
+      : localData!.variables;
+
+    for (const sourceVar of sourceVars) {
       try {
-        if (isUsingLibrary && libraryData) {
-          // Import from library
-          const libraryVar = matchLibraryVariable(libraryData.variables, override.variableName);
-
-          if (!libraryVar) {
-            debugInfo.push(`Variable not found in ${sourceLabel}: ${override.variableName}`);
-            results.push({
-              variableName: override.variableName,
-              status: 'not_found',
-              message: `Not found in ${sourceLabel}`,
-            });
-            continue;
-          }
-
-          const importedVar = await figma.variables.importVariableByKeyAsync(libraryVar.key);
-          localVariableMap.set(override.variableName, importedVar);
-
-          results.push({
-            variableName: override.variableName,
-            status: 'imported',
-            message: `Imported from library`,
-          });
-
-          debugInfo.push(`Imported: ${override.variableName}`);
-        } else if (localData) {
-          // Use local variable directly
-          const localVar = matchLocalVariable(localData.variables, override.variableName);
-
-          if (!localVar) {
-            debugInfo.push(`Variable not found in ${sourceLabel}: ${override.variableName}`);
-            results.push({
-              variableName: override.variableName,
-              status: 'not_found',
-              message: `Not found in ${sourceLabel}`,
-            });
-            continue;
-          }
-
-          localVariableMap.set(override.variableName, localVar);
-
-          results.push({
-            variableName: override.variableName,
-            status: 'imported',
-            message: `Found in local collection`,
-          });
-
-          debugInfo.push(`Found local: ${override.variableName}`);
+        if (libraryData) {
+          const importedVar = await figma.variables.importVariableByKeyAsync((sourceVar as LibraryVariable).key);
+          localVariableMap.set(sourceVar.name, importedVar);
+        } else {
+          localVariableMap.set(sourceVar.name, sourceVar as Variable);
         }
+        results.push({
+          variableName: sourceVar.name,
+          status: 'imported',
+          message: libraryData ? 'Imported from library' : 'Found in local collection',
+        });
+        debugInfo.push(`Loaded: ${sourceVar.name}`);
       } catch (error) {
         results.push({
-          variableName: override.variableName,
+          variableName: sourceVar.name,
           status: 'error',
           message: error instanceof Error ? error.message : 'Unknown error',
         });
-        debugInfo.push(`Error getting ${override.variableName}: ${error}`);
+        debugInfo.push(`Error getting ${sourceVar.name}: ${error}`);
       }
     }
 
@@ -926,16 +862,70 @@ figma.ui.onmessage = async (msg: PluginMessage) => {
   }
 };
 
-// Send initial data to UI
+// Send initial data to UI (override list is loaded asynchronously from the collection)
 figma.ui.postMessage({
   type: 'init',
-  overrides: TOKEN_OVERRIDES.map(o => ({
-    variableName: o.variableName,
-    description: o.description,
-    hexColor: o.hexColor,
-  })),
+  overrides: [],
   hasSelection: figma.currentPage.selection.length > 0,
 });
+
+function rgbToHex(c: RGB): string {
+  const h = (n: number) => Math.round(n * 255).toString(16).padStart(2, '0');
+  return `#${h(c.r)}${h(c.g)}${h(c.b)}`.toUpperCase();
+}
+
+/**
+ * Read the override list straight from the Figma collection for display in the UI.
+ */
+async function loadOverrideList(): Promise<void> {
+  try {
+    const libraryData = await findLibraryCollection();
+    const localData = !libraryData ? await findLocalCollection() : null;
+    if (!libraryData && !localData) {
+      figma.ui.postMessage({
+        type: 'overrides-loaded',
+        overrides: [],
+        error: `Could not find "${COLLECTION_NAME}" collection. Enable the "${LIBRARY_NAME}" library or open the library file.`,
+      });
+      return;
+    }
+
+    const sourceVars: Array<LibraryVariable | Variable> = libraryData
+      ? libraryData.variables.filter(v => v.resolvedType === 'COLOR')
+      : localData!.variables;
+
+    const overrides = [];
+    for (const sourceVar of sourceVars) {
+      let hexColor = '';
+      let description = '';
+      try {
+        const variable = libraryData
+          ? await figma.variables.importVariableByKeyAsync((sourceVar as LibraryVariable).key)
+          : (sourceVar as Variable);
+        const collection = await figma.variables.getVariableCollectionByIdAsync(variable.variableCollectionId);
+        const modeId = collection ? collection.defaultModeId : Object.keys(variable.valuesByMode)[0];
+        const value = variable.valuesByMode[modeId];
+        if (value && typeof value === 'object' && 'r' in value) {
+          hexColor = rgbToHex(value);
+        }
+        description = variable.description || '';
+      } catch (e) {
+        console.error(`Could not read ${sourceVar.name}`, e);
+      }
+      overrides.push({ variableName: sourceVar.name, description, hexColor });
+    }
+
+    figma.ui.postMessage({ type: 'overrides-loaded', overrides });
+  } catch (error) {
+    figma.ui.postMessage({
+      type: 'overrides-loaded',
+      overrides: [],
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+}
+
+loadOverrideList();
 
 // Listen for selection changes and update UI
 figma.on('selectionchange', () => {
