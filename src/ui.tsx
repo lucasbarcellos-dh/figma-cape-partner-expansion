@@ -20,6 +20,12 @@ interface InitMessage {
   hasSelection: boolean;
 }
 
+interface OverridesLoadedMessage {
+  type: 'overrides-loaded';
+  overrides: TokenOverrideInfo[];
+  error?: string;
+}
+
 interface SelectionChangedMessage {
   type: 'selection-changed';
   hasSelection: boolean;
@@ -69,7 +75,7 @@ interface RemapResultMessage {
   debugInfo?: string[];
 }
 
-type PluginMessage = InitMessage | ApplyResultMessage | SelectionChangedMessage | RemapResultMessage;
+type PluginMessage = InitMessage | OverridesLoadedMessage | ApplyResultMessage | SelectionChangedMessage | RemapResultMessage;
 
 type Tab = 'apply' | 'remap';
 
@@ -344,6 +350,8 @@ const styles = {
 
 function App() {
   const [overrides, setOverrides] = React.useState<TokenOverrideInfo[]>([]);
+  const [overridesLoading, setOverridesLoading] = React.useState(true);
+  const [overridesError, setOverridesError] = React.useState<string | null>(null);
   const [hasSelection, setHasSelection] = React.useState(false);
   const [scope, setScope] = React.useState<Scope>('selection');
   const [activeTab, setActiveTab] = React.useState<Tab>('apply');
@@ -362,6 +370,10 @@ function App() {
         if (!msg.hasSelection) {
           setScope('page');
         }
+      } else if (msg.type === 'overrides-loaded') {
+        setOverrides(msg.overrides);
+        setOverridesError(msg.error || null);
+        setOverridesLoading(false);
       } else if (msg.type === 'apply-result') {
         setIsApplying(false);
         setResult(msg);
@@ -477,21 +489,31 @@ function App() {
 
       {activeTab === 'apply' && (
         <div style={styles.section}>
-          <div style={styles.sectionTitle}>Token overrides ({overrides.length})</div>
+          <div style={styles.sectionTitle}>
+            Token overrides ({overridesLoading ? '…' : overrides.length})
+          </div>
+          {overridesLoading && (
+            <div style={styles.overrideDescription}>Loading overrides from Figma…</div>
+          )}
+          {overridesError && (
+            <div style={styles.overrideDescription}>{overridesError}</div>
+          )}
           <div style={styles.overrideList}>
             {overrides.map((override) => (
               <div key={override.variableName} style={styles.overrideItem}>
                 <div
                   style={{
                     ...styles.colorSwatch,
-                    backgroundColor: override.hexColor,
+                    backgroundColor: override.hexColor || 'transparent',
                   }}
                 />
                 <div style={styles.overrideInfo}>
                   <div style={styles.variableName}>{override.variableName}</div>
-                  <div style={styles.overrideDescription}>
-                    {override.description}
-                  </div>
+                  {override.description && (
+                    <div style={styles.overrideDescription}>
+                      {override.description}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

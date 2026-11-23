@@ -35,6 +35,16 @@ Install directly from the Figma Community: [Cape Partner Expansion](https://www.
 4. Click **Apply Overrides**
 5. Review the results showing imported variables and rebind counts
 
+## Adding a new override
+
+Overrides are read at runtime from the **Overrides** variable collection in the
+`[Cape] Partner Expansion` library; there is no list in the code.
+
+1. Add a color variable to the Overrides collection. Its name must be the exact path
+   of the Core variable it replaces (e.g. `feedback/color/info/accent-low`).
+2. Publish the library.
+3. Re-run the plugin. No code change or rebuild needed.
+
 ## Development
 
 ### Scripts
@@ -50,9 +60,7 @@ Install directly from the Figma Community: [Cape Partner Expansion](https://www.
 figma-cape-partner-expansion/
 ├── src/
 │   ├── code.ts              # Plugin sandbox code (Figma API)
-│   ├── ui.tsx               # React UI component
-│   └── overrides/
-│       └── token-overrides.ts  # Token definitions
+│   └── ui.tsx               # React UI component
 ├── data/
 │   ├── cape-tokens.json     # Token reference data
 │   └── cape-vendor-expansion.scss  # CSS override reference
